@@ -112,22 +112,16 @@ async function updateUI() {
 
     userAddressSpan.textContent = userAccount;
     
-    let networkId;
+    let networkName;
     try {
-        const networkId = await get_current_network();
-        console.log("Network ID:", networkId);
+        const networkName = await get_current_network();
+        console.log("Network Name:", networkName);
     } catch (error) {
-        console.error("Error fetching network ID:", error);
+        console.error("Error fetching network Name:", error);
         alert("Failed to fetch network data. Please ensure you're connected to the correct network.");
         return;
     }
-    let networkName;
-    switch (networkId) {
-        case 1: networkName = "Mainnet"; break;
-        case 5: networkName = "Goerli"; break;
-        case 11155111: networkName = "Sepolia"; break;
-        default: networkName = "Unknown";
-    }
+
     networkNameSpan.textContent = networkName;
 
     // Call a view function to get the coordinator address
