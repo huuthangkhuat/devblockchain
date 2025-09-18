@@ -89,6 +89,7 @@ async function connectWallet() {
         try {
             const accounts = await get_current_eth_address();
             userAccount = accounts[0];
+            console.log("Connected account:", userAccount);
             web3 = new Web3(window.ethereum);
             votingContract = new web3.eth.Contract(contractABI, contractAddress);
             updateUI();
