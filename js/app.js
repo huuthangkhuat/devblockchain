@@ -48,8 +48,15 @@ async function updateUI() {
     }
 
     userAddressSpan.textContent = userAccount;
-
-    const networkId = await web3.eth.getChainId();
+    
+    let networkId;
+    try {
+        const networkId = await web3.eth.get_current_network();
+    } catch (error) {
+        console.error("Error fetching network ID:", error);
+        alert("Failed to fetch network data. Please ensure you're connected to the correct network.");
+        return;
+    }
     let networkName;
     switch (networkId) {
         case 1: networkName = "Mainnet"; break;
@@ -60,7 +67,14 @@ async function updateUI() {
     networkNameSpan.textContent = networkName;
 
     // Call a view function to get the coordinator address
-    const coordinatorAddress = await votingContract.methods.coordinator().call();
+    try {
+        const coordinatorAddress = await votingContract.methods.coordinator().call();
+        console.log("Coordinator address:", coordinatorAddress);
+    } catch (error) {
+        console.error("Error fetching coordinator address:", error);
+        alert("Failed to fetch contract data. Please ensure you're connected to the correct network.");
+        return;
+    }
     if (userAccount.toLowerCase() === coordinatorAddress.toLowerCase()) {
         userRoleSpan.textContent = "Coordinator";
         userRole = "Coordinator";
@@ -70,9 +84,16 @@ async function updateUI() {
     }
 
     // Now, let's test a simple read function to get the contract phase
-    const phase = await votingContract.methods.getPhase().call();
+    try {
+        const phase = await votingContract.methods.getPhase().call();
+        currentStatusSpan.textContent = phase;
+        console.log("Current contract phase:", phase);
+    } catch (error) {
+        console.error("Error fetching contract phase:", error);
+        alert("Failed to fetch contract status. Please try again later.");
+        return;
+    }
     currentStatusSpan.textContent = phase;
-    console.log("Current contract phase:", phase);
 
     // We'll add more UI update logic here in the next steps
     displaySectionsByPhase(phase);
