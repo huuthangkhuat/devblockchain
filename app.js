@@ -156,6 +156,7 @@ async function updateUI() {
         const phase = await votingContract.methods.getPhase().call();
         currentStatusSpan.textContent = phase;
         console.log("Current contract phase:", phase);
+        
     } catch (error) {
         console.error("Error fetching contract phase:", error);
         alert("Failed to fetch contract status. Please try again later.");
