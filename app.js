@@ -8,7 +8,7 @@ const contractABI = [
 
 // Global variables for Web3 and contract instances
 let web3;
-let votingContract;
+let votingContract = new web3.eth.Contract(contractABI, contractAddress);
 let userAccount;
 let userRole; // "Coordinator" or "Participant"
 
@@ -90,7 +90,6 @@ async function connectWallet() {
             const accounts = await get_current_eth_address();
             userAccount = accounts[0];
             web3 = new Web3(window.ethereum);
-            votingContract = new web3.eth.Contract(contractABI, contractAddress);
             updateUI();
         } catch (error) {
             console.error("User denied account access or another error occurred:", error);
