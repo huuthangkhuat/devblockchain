@@ -19,11 +19,75 @@ const userRoleSpan = document.getElementById('userRole');
 const networkNameSpan = document.getElementById('networkName');
 const currentStatusSpan = document.getElementById('currentStatus');
 
+//Helper function to obtain current eth address
+async function get_current_eth_address(){
+    if (typeof window.ethereum !== 'undefined') {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        console.log(accounts);
+        return accounts[0]
+    }
+    else{
+        console.error("Metamask is not installed!");
+        return null;
+    }
+}
+
+//Helper function to obtain user balance
+async function get_user_balance(eth_address){
+    if (typeof window.ethereum !== 'undefined') {
+        const balance = await window.ethereum.request({
+            method: "eth_getBalance",
+            params: [eth_address],
+        })
+        console.log(balance);
+        return (parseInt(balance, 16) / Math.pow(10,18)).toFixed(10);
+    }
+    else{
+        console.error("Metamask is not installed!");
+        return null;
+    }
+}
+
+//Helper function to obtain current eth network
+async function get_current_network(){
+    // get current eth network
+    const eth_network = await window.ethereum.request({
+        method: 'eth_chainId',
+        params: []
+    });
+    var current_network = parseInt(eth_network, 16);
+    // console.log(typeof(current_network));
+    var result;
+    switch (current_network) {
+                    case 1:
+                    result = "Mainnet";
+                    break
+                    case 5:
+                    result = "Goerli";
+                    break
+                    case 11155111:
+                    result =  "Sepolia";
+                    break
+                    case 2018:
+                    result =  "Dev";
+                    break
+                    case 63:
+                    result =  "Mordor";
+                    break
+                    case 61:
+                    result =  "Classic";
+                    break
+                    default:
+                    result =  "unknow";
+            }
+    return result;
+}
+
 // Connect to MetaMask
 async function connectWallet() {
     if (window.ethereum) {
         try {
-            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+            const accounts = await get_current_eth_address();
             userAccount = accounts[0];
             web3 = new Web3(window.ethereum);
             votingContract = new web3.eth.Contract(contractABI, contractAddress);
@@ -51,7 +115,7 @@ async function updateUI() {
     
     let networkId;
     try {
-        const networkId = await window.ethereum.request({ method: 'eth_chainId', params: [] });
+        const networkId = await get_current_network
     } catch (error) {
         console.error("Error fetching network ID:", error);
         alert("Failed to fetch network data. Please ensure you're connected to the correct network.");
