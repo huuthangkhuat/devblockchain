@@ -115,6 +115,7 @@ async function updateUI() {
     let networkId;
     try {
         const networkId = await get_current_network();
+        console.log("Network ID:", networkId);
     } catch (error) {
         console.error("Error fetching network ID:", error);
         alert("Failed to fetch network data. Please ensure you're connected to the correct network.");
