@@ -129,15 +129,18 @@ async function updateUI() {
 
     networkNameSpan.textContent = networkName;
 
-    // Call a view function to get the coordinator address
+    // Get coordinator address
+    let coordinatorAddress; 
+
     try {
-        const coordinatorAddress = await votingContract.methods.coordinator().call();
+        coordinatorAddress = await votingContract.methods.coordinator().call();
         console.log("Coordinator address:", coordinatorAddress);
     } catch (error) {
         console.error("Error fetching coordinator address:", error);
         alert("Failed to fetch contract data. Please ensure you're connected to the correct network.");
         return;
     }
+
     if (userAccount.toLowerCase() === coordinatorAddress.toLowerCase()) {
         userRoleSpan.textContent = "Coordinator";
         userRole = "Coordinator";
@@ -146,7 +149,9 @@ async function updateUI() {
         userRole = "Participant";
     }
 
-    // Now, let's test a simple read function to get the contract phase
+    // Get phase
+    let phase;
+
     try {
         const phase = await votingContract.methods.getPhase().call();
         currentStatusSpan.textContent = phase;
@@ -158,7 +163,7 @@ async function updateUI() {
     }
     currentStatusSpan.textContent = phase;
 
-    // We'll add more UI update logic here in the next steps
+    // Trigger display
     displaySectionsByPhase(phase);
 }
 
