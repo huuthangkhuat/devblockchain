@@ -8,7 +8,7 @@ const contractABI = [
 
 // Global variables for Web3 and contract instances
 let web3;
-let votingContract = new web3.eth.Contract(contractABI, contractAddress);
+let votingContract;
 let userAccount;
 let userRole; // "Coordinator" or "Participant"
 
@@ -90,6 +90,7 @@ async function connectWallet() {
             const accounts = await get_current_eth_address();
             userAccount = accounts[0];
             web3 = new Web3(window.ethereum);
+            votingContract = new web3.eth.Contract(contractABI, contractAddress);
             updateUI();
         } catch (error) {
             console.error("User denied account access or another error occurred:", error);
@@ -117,7 +118,7 @@ async function updateUI() {
         const networkName = await get_current_network();
         console.log("Network Name:", networkName);
     } catch (error) {
-        console.error("Error fetching network Name:", error);
+        console.error("Error fetching network name:", error);
         alert("Failed to fetch network data. Please ensure you're connected to the correct network.");
         return;
     }
