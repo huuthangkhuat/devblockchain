@@ -163,7 +163,7 @@ async function updateUI() {
     }
     currentStatusSpan.textContent = phase;
 
-    // Trigger display
+    // Trigger display logic based on role and phase
     displaySectionsByPhase(phase);
 }
 
