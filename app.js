@@ -51,7 +51,7 @@ async function updateUI() {
     
     let networkId;
     try {
-        const networkId = await web3.eth.get_current_network();
+        const networkId = await window.ethereum.request({ method: 'eth_chainId' });
     } catch (error) {
         console.error("Error fetching network ID:", error);
         alert("Failed to fetch network data. Please ensure you're connected to the correct network.");
