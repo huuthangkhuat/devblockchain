@@ -1,2 +1,2 @@
-# BlockchainApp.github.io
+# DevBlockChain
 Developing DApp application that connects to Blockchain application
